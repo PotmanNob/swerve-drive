@@ -4,7 +4,13 @@
 
 package frc.robot;
 
+import java.io.File;
+import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import swervelib.SwerveDrive;
+import swervelib.parser.SwerveParser;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,8 +23,22 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+   //initalize xbox controller
+   XboxController controller = new XboxController(0);
+
+   SwerveDrive swerveDrive;
+
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    try {
+      File swerveParserFile = new File(Filesystem.getDeployDirectory(), "swerve/neokraken");
+      SwerveParser swerveParser = new SwerveParser(swerveParserFile);
+      swerveDrive = swerveParser.createSwerveDrive(40); // random num
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+  }
 
   @Override
   public void robotPeriodic() {}
